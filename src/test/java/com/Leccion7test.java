@@ -17,8 +17,11 @@ public class Leccion7test {
     @DataProvider(name = "loginData")
     public Object[][] getLoginData() {
         return new Object[][]{
-            {"Weasta", "Nacho0109#"}};
-    }
+            {"Weasta", "Nacho0109#"},
+            {"pedrito123", "Pedrito123!"},
+            {"invalidUser", "wrongPassword"}
+    };
+}
 
     @Test(dataProvider = "loginData")
     public void DataProviderTest(String username, String password) {

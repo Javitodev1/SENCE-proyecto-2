@@ -2,9 +2,9 @@
 package com;
 
 import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterClass;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,18 +16,24 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import java.time.Duration;
+import org.testng.Assert;
 
 public class LoginTest {
     private WebDriver driver;
     JavascriptExecutor js;
+    int failedAttempts = 0; //contador de intentos fallidos
 
-    @BeforeMethod
+    @BeforeClass
     public void setUp() {
         driver = new FirefoxDriver();
         js = (JavascriptExecutor) driver;
+        driver.manage().window().setSize(new Dimension(1529, 993));
     }
 
-    @AfterMethod
+    @AfterClass
     public void tearDown() {
         driver.quit();
     }
@@ -40,6 +46,9 @@ public class LoginTest {
         driver.findElement(By.id("userName")).sendKeys("pedrito123");
         driver.findElement(By.id("password")).sendKeys("Pedrito123!");
         driver.findElement(By.id("login")).click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Log out']"))).click();
     }
 
     @DataProvider(name = "loginData")
@@ -65,10 +74,33 @@ public Object[][] getLoginData() throws IOException {
 }
     @Test(dataProvider = "loginData")
 public void loginFallido(String username, String password) {
-    driver.get("https://demoqa.com/login");
+     if (failedAttempts >= 3) {
+        System.out.println("Simulación: usuario bloqueado por múltiples intentos fallidos.");
+        return;
+    }
+
+    driver.findElement(By.id("userName")).clear();
     driver.findElement(By.id("userName")).sendKeys(username);
+    driver.findElement(By.id("password")).clear();
     driver.findElement(By.id("password")).sendKeys(password);
     driver.findElement(By.id("login")).click();
+
+    // Esperar el mensaje de error
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+    String mensajeError = wait.until(
+        ExpectedConditions.visibilityOfElementLocated(By.id("name"))
+    ).getText();
+
+    // Validar que el mensaje sea el esperado
+    System.out.println("📩 Mensaje mostrado: " + mensajeError);
+    Assert.assertTrue(mensajeError.contains("Invalid username or password!"), "No se encontró el mensaje esperado.");
+
+    // Si el mensaje es correcto, aumentar contador de fallos
+    failedAttempts++;
+
+    if (failedAttempts == 3) {
+        System.out.println("3 intentos fallidos detectados. Simulando bloqueo.");
+    }
 }
 }
 
