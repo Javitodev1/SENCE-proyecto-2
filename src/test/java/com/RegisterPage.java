@@ -12,15 +12,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class RegisterPage {
-    private WebDriver driver;
-    private JavascriptExecutor js;
+    WebDriver driver;
+    JavascriptExecutor js;
 
-    private By newuser = By.id("newUser");
-    private By firstname = By.id("firstname");
-    private By lastname = By.id("lastname");
-    private By username = By.id("userName");
-    private By password = By.id("password");
-    private By register = By.id("register");
+    By newuser = By.id("newUser");
+    By firstname = By.id("firstname");
+    By lastname = By.id("lastname");
+    By username = By.id("userName");
+    By password = By.id("password");
+    By register = By.id("register");
 
     public RegisterPage(WebDriver driver) {
         this.driver = driver;
@@ -46,7 +46,7 @@ public class RegisterPage {
     }
 
     public void setUsername(String user) {
-        driver.findElement(username).sendKeys(user);
+        driver.findElement(firstname).sendKeys(user);
     }
 
     public void setPassword(String pass) {
