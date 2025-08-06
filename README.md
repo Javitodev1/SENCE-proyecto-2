@@ -24,6 +24,18 @@ Asegúrate de tener lo siguiente instalado en tu máquina:
 git clone https://github.com/Javitodev1/SENCE-proyecto-2.git
 cd SENCE-proyecto-2
 ```
+## Renombrar POM file
+Renombrar el archivo por segun corresponda su sistema operativo
+```bash
+mv pom.xml.linux pom.xml
+```
+
+o
+
+```bash
+mv pom.xml.window pom.xml
+```
+
 ## Compilar y descargar dependencias
 ```bash
 mvn clean install
