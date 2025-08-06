@@ -80,10 +80,11 @@ Validar funcionalmente:
 
 
 
-## Estructura del proyecto
+## 📁 Estructura del proyecto
 
 ### Estructura de carpetas
 
+```bash
  src
 └── test
     ├── java
@@ -100,6 +101,7 @@ Validar funcionalmente:
         └── datos
             ├── LoginData.xlsx
             └── PracticeFormData.xlsx
+```
 
 ### Estructura de POM
 
@@ -122,7 +124,7 @@ Facilita el proceso de registro manejando las siguientes propiedades del formula
 - password
 - register
 
-## Resultados de las pruebas
+## ✅ Resultados de las pruebas
 
 ### Salida de consola
 
