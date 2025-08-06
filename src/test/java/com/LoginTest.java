@@ -47,8 +47,19 @@ public class LoginTest {
         driver.findElement(By.id("password")).sendKeys("Pedrito123!");
         driver.findElement(By.id("login")).click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Log out']"))).click();
+    
+     // Esperar a que se redirija y se cargue el botón de logout
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+    wait.until(ExpectedConditions.urlToBe("https://demoqa.com/profile"));
+
+    // Validar que la URL sea la esperada
+    String currentUrl = driver.getCurrentUrl();
+    Assert.assertEquals(currentUrl, "https://demoqa.com/profile", "La URL después del login no es la esperada");
+    System.out.println("✅ Login exitoso confirmado. URL actual: " + currentUrl);
+
+    // Hacer clic en "Log out" para cerrar sesión
+    wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Log out']"))).click();
+    System.out.println("🔄 Logout realizado para reiniciar estado.");
     }
 
     @DataProvider(name = "loginData")
@@ -78,7 +89,7 @@ public void loginFallido(String username, String password) {
         System.out.println("Simulación: usuario bloqueado por múltiples intentos fallidos.");
         return;
     }
-
+    
     driver.findElement(By.id("userName")).clear();
     driver.findElement(By.id("userName")).sendKeys(username);
     driver.findElement(By.id("password")).clear();
